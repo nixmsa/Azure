@@ -1,0 +1,11 @@
+root@uazure:/tmp# RPQLUDSDH^C
+root@uazure:/tmp# az account list --query [*].[name,id]
+[
+  [
+    "Azure subscription 1",
+    "5d2deb94-44c1-4f65-88dc-22e6a9841a7f"
+  ]
+]
+root@uazure:/tmp#
+
+

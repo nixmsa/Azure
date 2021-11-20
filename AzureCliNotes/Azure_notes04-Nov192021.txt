@@ -1,0 +1,227 @@
+*** Azure ***
+
+mahsan@uazure:~$ az account list -o json
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "69b51b68-b4cd-40fa-ac55-79544376c330",
+    "id": "5d2deb94-44c1-4f65-88dc-22e6a9841a7f",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Azure subscription 1",
+    "state": "Enabled",
+    "tenantId": "69b51b68-b4cd-40fa-ac55-79544376c330",
+    "user": {
+      "name": "nixmsa@outlook.com",
+      "type": "user"
+    }
+  }
+]
+mahsan@uazure:~$
+
+mahsan@uazure:~$ az account list -o table
+Name                  CloudName    SubscriptionId                        State    IsDefault
+--------------------  -----------  ------------------------------------  -------  -----------
+Azure subscription 1  AzureCloud   5d2deb94-44c1-4f65-88dc-22e6a9841a7f  Enabled  True
+mahsan@uazure:~$
+
+mahsan@uazure:~$ az account list -o table --query '[].[user.name]'
+Column1
+------------------
+nixmsa@outlook.com
+mahsan@uazure:~$
+
+mahsan@uazure:~$ az ad sp create-for-rbac --name mahsan
+In a future release, this command will NOT create a 'Contributor' role assignment by default. If needed, use the --role argument to explicitly create a role assignment.
+Creating 'Contributor' role assignment under scope '/subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f'
+The output includes credentials that you must protect. Be sure that you do not include these credentials in your code or check the credentials into your source control. For more information, see https://aka.ms/azadsp-cli
+'name' property in the output is deprecated and will be removed in the future. Use 'appId' instead.
+{
+  "appId": "ec92573d-f71b-4f7e-aa9a-874b95f09969",
+  "displayName": "mahsan",
+  "name": "ec92573d-f71b-4f7e-aa9a-874b95f09969",
+  "password": "EZ2wr3Kx_XOyOZBPhoZfoes-exbjEIPW1T",
+  "tenant": "69b51b68-b4cd-40fa-ac55-79544376c330"
+}
+mahsan@uazure:~$
+
+mahsan@uazure:~$ az role assignment list --assignee "ec92573d-f71b-4f7e-aa9a-874b95f09969" -o table
+Principal                             Role         Scope
+------------------------------------  -----------  ---------------------------------------------------
+ec92573d-f71b-4f7e-aa9a-874b95f09969  Contributor  /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f
+mahsan@uazure:~$
+
+PS /home/muhammad> $pass = ConvertTo-SecureString "YOURPASS" ` -AsPlainText –Force
+
+PS /home/muhammad> New-AzureRmADServicePrincipal -DisplayName mahsan
+WARNING: Upcoming breaking changes in the cmdlet 'New-AzADServicePrincipal' :
+
+- The output type is changing from the existing type :'Microsoft.Azure.Commands.ActiveDirectory.PSADServicePrincipal' to the new type :'Microsoft.Azure.PowerShell.Cmdlets.Resources.MSGraph.Models.ApiV10.IMicrosoftGraphServicePrincipal'
+
+- The output type is changing from the existing type :'Microsoft.Azure.Commands.Resources.Models.Authorization.PSADServicePrincipalWrapper' to the new type :'Microsoft.Azure.PowerShell.Cmdlets.Resources.MSGraph.Models.ApiV10.IMicrosoftGraphServicePrincipal'
+Note : Go to https://aka.ms/azps-changewarnings for steps to suppress this breaking change warning, and other information on breaking changes in Azure PowerShell.
+WARNING: 6:15:00 AM - New-AzAdServicePrincipal will no longer assign role 'Contributor' to new created service principal by default
+
+Secret                : System.Security.SecureString
+ServicePrincipalNames : {26ed5fa4-c0f8-4e1c-a084-503185c81cc7}
+ApplicationId         : 26ed5fa4-c0f8-4e1c-a084-503185c81cc7
+ObjectType            : ServicePrincipal
+DisplayName           : mahsan
+Id                    : cbe9096b-72e1-43bf-8e8c-f757084bbd22
+Type                  : ServicePrincipal
+DeletionTimestamp     :
+AdditionalProperties  :
+
+WARNING: Assigning role 'Contributor' over scope '/subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f' to the new service principal.
+
+PS /home/muhammad>
+
+S /home/muhammad> Get-AzureRMLocation | Select-Object "Location”
+
+Location
+--------
+eastasia
+southeastasia
+centralus
+eastus
+eastus2
+westus
+northcentralus
+southcentralus
+northeurope
+westeurope
+japanwest
+japaneast
+brazilsouth
+australiaeast
+australiasoutheast
+southindia
+centralindia
+westindia
+canadacentral
+canadaeast
+uksouth
+ukwest
+westcentralus
+westus2
+koreacentral
+francecentral
+francesouth
+australiacentral
+australiacentral2
+uaecentral
+uaenorth
+southafricanorth
+southafricawest
+switzerlandnorth
+switzerlandwest
+germanynorth
+germanywestcentral
+norwaywest
+
+PS /home/muhammad> New-AzureRmResourceGroup -Location westus2 `
+>>   -Name "MyResource1"
+
+ResourceGroupName : MyResource1
+Location          : westus2
+ProvisioningState : Succeeded
+Tags              :
+ResourceId        : /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/MyResource1
+
+
+PS /home/muhammad>
+
+
+PS /home/muhammad> Get-AzureRmResourceGroup | Format-Table
+
+ResourceGroupName          Location ProvisioningState Tags TagsTable ResourceId                                                                                    ManagedB
+                                                                                                                                                                   y
+-----------------          -------- ----------------- ---- --------- ----------                                                                                    --------
+cloud-shell-storage-westus westus   Succeeded                        /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/cloud-shell-storage-westus
+NetworkWatcherRG           westus2  Succeeded                        /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/NetworkWatcherRG
+DefaultResourceGroup-WUS2  westus2  Succeeded                        /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/DefaultResourceGroup-WUS2
+MyResource1                westus2  Succeeded                        /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/MyResource1
+
+PS /home/muhammad>
+
+Welcome to Azure Cloud Shell
+
+Type "az" to use Azure CLI
+Type "help" to learn about Cloud Shell
+
+muhammad@Azure:~$ az group create --name MyResource1 --location westus2
+{
+  "id": "/subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/MyResource1",
+  "location": "westus2",
+  "managedBy": null,
+  "name": "MyResource1",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+muhammad@Azure:~$
+
+*******
+
+MOTD: Switch to PowerShell from Bash: pwsh
+
+VERBOSE: Authenticating to Azure ...
+VERBOSE: Building your Azure drive ...
+Loading personal and system profiles took 4703ms.
+PS /home/muhammad> Connect-AzAccount
+WARNING: Interactive authentication is not supported in this session, please run cmdlet 'Connect-AzAccount -UseDeviceAuthentication'.
+PS /home/muhammad> Connect-AzAccount -UseDeviceAuthentication
+WARNING: To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code AZNTG38JA to authenticate.
+
+Account            SubscriptionName     TenantId                             Environment
+-------            ----------------     --------                             -----------
+nixmsa@outlook.com Azure subscription 1 69b51b68-b4cd-40fa-ac55-79544376c330 AzureCloud
+
+PS /home/muhammad>
+
+PS /home/muhammad> New-AzureRmVM -Name "UbuntuVM" -Location westus `
+
+cmdlet New-AzVM at command pipeline position 1
+Supply values for the following parameters:
+Credential
+User:
+PS /home/muhammad> New-AzureRmVM -Name "UbuntuVM" -Location westus `
+>>   -ResourceGroupName MyResource1 -ImageName UbuntuLTS `
+>>   -Size Standard_B1S
+
+cmdlet New-AzVM at command pipeline position 1
+Supply values for the following parameters:
+Credential
+User: mahsan
+Password for user mahsan: *******************
+
+New-AzVM: The requested size for resource '/subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/MyResource1/providers/Microsoft.Compute/virtualMachines/Ubuntu
+VM' is currently not available in location 'westus' zones '' for subscription '5d2deb94-44c1-4f65-88dc-22e6a9841a7f'. Please try another size or deploy to a different locat
+
+
+#########
+***16-Nov=2021
+muhammad@Azure:~$ az vm create --name UbuntuVM --resource-group MyResource1 --image UbuntuLTS --authentication-type password --admin-username mahsan --size Standard_B1S
+Admin Password:
+Confirm Admin Password:
+
+Connect-AzAccount -UseDeviceAuthentication ### connect azure for power shell ## 
+
+PS /home/muhammad> Get-AzureRmVMImagePublisher -Location westus2 | grep -i redhat
+RedHat                                                                             westus2  /Subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/Providers/Microsoft.Compute…
+redhat-rhel                                                                        westus2  /Subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/Providers/Microsoft.Compute…
+PS /home/muhammad>
+
+***Publisher
+ 
+mahsan@uazure:~$ az vm image list-publishers --location westus2 --output table | grep redhat
+westus2     redhat-rhel
+mahsan@uazure:~$ az vm image list-publishers --location westus2 --output table | grep -i redhat
+westus2     RedHat
+westus2     redhat-rhel
+mahsan@uazure:~$ az vm image list-publishers --location westus2 --output table | grep -i oracle
+westus2     Oracle
+mahsan@uazure:~
+

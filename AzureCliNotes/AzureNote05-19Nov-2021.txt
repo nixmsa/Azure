@@ -1,0 +1,339 @@
+*** POWER SHELL ***
+
+$myRG = "chapter4"
+
+$myLocation = "westus2"
+
+$myTestVM = "ubuntu01" 
+
+PS /home/mahsan> az group list -o table
+Name                        Location    Status
+--------------------------  ----------  ---------
+cloud-shell-storage-westus  westus      Succeeded
+NetworkWatcherRG            westus2     Succeeded
+DefaultResourceGroup-WUS2   westus2     Succeeded
+PS /home/mahsan> $myRG = "chapter4"
+PS /home/mahsan> $myLocation = "westus2"
+PS /home/mahsan> $myTestVM = "ubuntu01"
+PS /home/mahsan>
+
+
+MOTD: Save files to $home/clouddrive for persistence across sessions
+
+VERBOSE: Authenticating to Azure ...
+VERBOSE: Building your Azure drive ...
+Loading personal and system profiles took 4258ms.
+PS /home/muhammad> $myRG = "chapter4"
+PS /home/muhammad> $myLocation = "westus2"
+PS /home/muhammad> $myTestVM = "ubuntu01"
+PS /home/muhammad> New-AzResourceGroup -Name $myRG -Location $myLocation
+
+ResourceGroupName : chapter4
+Location          : westus2
+ProvisioningState : Succeeded
+Tags              :
+ResourceId        : /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/chapter4
+
+
+PS /home/muhammad>
+
+mahsan@uazure:~$ az group list -o table
+Name                        Location    Status
+--------------------------  ----------  ---------
+cloud-shell-storage-westus  westus      Succeeded
+NetworkWatcherRG            westus2     Succeeded
+DefaultResourceGroup-WUS2   westus2     Succeeded
+chapter4                    westus2     Succeeded
+mahsan@uazure:~$
+
+###
+
+New-AzVm '
+
+  -ResourceGroupName $myRG '
+
+  -Name $myTestVM '
+
+  -ImageName UbuntuLTS '
+
+  -Location $myLocation '
+
+  -VirtualNetworkName "$myTestVM-Vnet" '
+
+  -SubnetName $myTestVM-Subnet '
+
+  -SecurityGroupName "$myTestVM-NSG" '
+
+  -PublicIpAddressName $myTestVM-pip
+
+
+https://aka.ms/powershell
+Type 'help' to get help.
+
+
+MOTD: Save files to $home/clouddrive for persistence across sessions
+
+VERBOSE: Authenticating to Azure ...
+VERBOSE: Building your Azure drive ...
+Loading personal and system profiles took 4258ms.
+PS /home/muhammad> $myRG = "chapter4"
+PS /home/muhammad> $myLocation = "westus2"PS /home/muhammad> $myTestVM = "ubuntu01"
+PS /home/muhammad> New-AzResourceGroup -Name $myRG -Location $myLocation
+
+ResourceGroupName : chapter4
+Location          : westus2
+ProvisioningState : Succeeded
+Tags              :
+ResourceId        : /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/chapter4
+
+
+PS /home/muhammad> New-AzVm '
+>>
+>>   -ResourceGroupName $myRG '
+
+cmdlet New-AzVM at command pipeline position 1
+Supply values for the following parameters:
+Name:
+PS /home/muhammad>
+PS /home/muhammad>   -Name $myTestVM '
+>>
+>>   -ImageName UbuntuLTS '
+-Name: The term '-Name' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS /home/muhammad>
+PS /home/muhammad>   -Location $myLocation '
+>>
+>>   -VirtualNetworkName "$myTestVM-Vnet" '
+-Location: The term '-Location' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS /home/muhammad>
+PS /home/muhammad>   -SubnetName $myTestVM-Subnet '
+>>
+>>   -SecurityGroupName "$myTestVM-NSG" '
+-SubnetName: The term '-SubnetName' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS /home/muhammad>
+PS /home/muhammad>   -PublicIpAddressName $myTestVM-pip^C
+PS /home/muhammad> New-AzVm '
+>> -ResourceGroupName $myRG ' -Name $myTestVM ' -ImageName UbuntuLTS ' -Location $myLocation ' -VirtualNetworkName "$myTestVM-Vnet" ' -SubnetName $myTestVM-Subnet ' -SecurityGroupName "$myTestVM-NSG" ' -PublicIpAddressName $myTestVM-pip
+New-AzVM: A positional parameter cannot be found that accepts argument '
+-ResourceGroupName $myRG '.
+PS /home/muhammad> New-AzVm `
+>> -ResourceGroupName $myRG ` -Name $myTestVM ` -ImageName UbuntuLTS ` -Location $myLocation ` -VirtualNetworkName "$myTestVM-Vnet" ` -SubnetName $myTestVM-Subnet ` -SecurityGroupName "$myTestVM-NSG" ` -PublicIpAddressName $myTestVM-pip
+
+cmdlet New-AzVM at command pipeline position 1
+Supply values for the following parameters:
+Credential
+User: mahsan
+Password for user mahsan: *******************
+
+No Size value has been provided. The VM will be created with the default size Standard_D2s_v3.
+
+
+ResourceGroupName        : chapter4
+Id                       : /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/chapter4/providers/Microsoft.Compute/virtualMachines/ubuntu01
+VmId                     : e069c415-bca3-4c49-a794-e4a841202fc8
+Name                     : ubuntu01
+Type                     : Microsoft.Compute/virtualMachines
+Location                 : westus2
+Tags                     : {}
+HardwareProfile          : {VmSize}
+NetworkProfile           : {NetworkInterfaces}
+OSProfile                : {ComputerName, AdminUsername, LinuxConfiguration, Secrets, AllowExtensionOperations, RequireGuestProvisionSignal}
+ProvisioningState        : Succeeded
+StorageProfile           : {ImageReference, OsDisk, DataDisks}
+FullyQualifiedDomainName : ubuntu01-b3f6da.westus2.cloudapp.azure.com
+
+
+PS /home/muhammad>
+
+mahsan@uazure:~$ az vm list -o table
+Name      ResourceGroup    Location    Zones
+--------  ---------------  ----------  -------
+ubuntu01  CHAPTER4         westus2
+mahsan@uazure:~$
+
+
+***********
+
+
+PS /home/muhammad> Get-AzStorageAccount | Select StorageAccountName, Location
+
+StorageAccountName  Location
+------------------  --------
+cs4100320019cb2fc68 westus
+
+PS /home/muhammad>
+
+PS /home/mahsan> az account list-locations --query '[].name'
+[
+  "eastus",
+  "eastus2",
+  "southcentralus",
+  "westus2",
+  "westus3",
+  "australiaeast",
+  "southeastasia",
+  "northeurope",
+  "swedencentral",
+  "uksouth",
+  "westeurope",
+  "centralus",
+  "northcentralus",
+  "westus",
+  "southafricanorth",
+  "centralindia",
+  "eastasia",
+  "japaneast",
+  "jioindiawest",
+  "koreacentral",
+  "canadacentral",
+  "francecentral",
+  "germanywestcentral",
+  "norwayeast",
+  "switzerlandnorth",
+  "uaenorth",
+  "brazilsouth",
+  "centralusstage",
+  "eastusstage",
+  "eastus2stage",
+  "northcentralusstage",
+  "southcentralusstage",
+  "westusstage",
+  "westus2stage",
+  "asia",
+  "asiapacific",
+  "australia",
+  "brazil",
+  "canada",
+  "europe",
+  "france",
+  "germany",
+  "global",
+  "india",
+  "japan",
+  "korea",
+  "norway",
+  "southafrica",
+  "switzerland",
+  "uae",
+  "uk",
+  "unitedstates",
+  "eastasiastage",
+  "southeastasiastage",
+  "centraluseuap",
+  "eastus2euap",
+  "westcentralus",
+  "southafricawest",
+  "australiacentral",
+  "australiacentral2",
+  "australiasoutheast",
+  "japanwest",
+  "jioindiacentral",
+  "koreasouth",
+  "southindia",
+  "westindia",
+  "canadaeast",
+  "francesouth",
+  "germanynorth",
+  "norwaywest",
+  "switzerlandwest",
+  "ukwest",
+  "uaecentral",
+  "brazilsoutheast"
+]
+PS /home/mahsan>
+$ docker run -it mcr.microsoft.com/azure-powershell bash
+root@9d708463878c:/# pwsh
+PowerShell 7.0.3
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+https://aka.ms/powershell
+Type 'help' to get help.
+
+PS /> connect-azaccount
+WARNING: Unable to acquire token for tenant 'organizations'
+Connect-AzAccount: InteractiveBrowserCredential authentication failed: Unable to open a web page using xdg-open. See inner exception for details. Possible causes for this error are: xdg-open is not installed or it cannot find a way to open an url - make sure you can open a web page by invoking from a terminal: xdg-open https://www.bing.com 
+
+MOTD: Modules installed with 'Install-Module' are persisted across sessions
+
+VERBOSE: Authenticating to Azure ...
+VERBOSE: Building your Azure drive ...
+Loading personal and system profiles took 3543ms.
+PS /home/muhammad> New-AzVM -Name "UbuntuVM" -Location westus2 ' -ResourceGroupName chapter4 `
+>>
+>>
+>>  -ImageName UbuntuLTS -Size Standard_B1S^C
+PS /home/muhammad> New-AzVM -Name "UbuntuVM" -Location westus2 ` -ResourceGroupName chapter4 ` -ImageName UbuntuLTS -Size Standard_B1S
+
+cmdlet New-AzVM at command pipeline position 1
+Supply values for the following parameters:
+Credential
+User: mahsan
+Password for user mahsan: *******************
+
+Creating Azure resources [
+
+ResourceGroupName        : chapter4
+Id                       : /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/chapter4/providers/Microsoft.Compute/virtualMachines/UbuntuVM
+VmId                     : 26839124-09d8-4a9f-9511-5532807b7245
+Name                     : UbuntuVM
+Type                     : Microsoft.Compute/virtualMachines
+Location                 : westus2
+Tags                     : {}
+HardwareProfile          : {VmSize}
+NetworkProfile           : {NetworkInterfaces}
+OSProfile                : {ComputerName, AdminUsername, LinuxConfiguration, Secrets, AllowExtensionOperations, RequireGuestProvisionSignal}
+ProvisioningState        : Succeeded
+StorageProfile           : {ImageReference, OsDisk, DataDisks}
+FullyQualifiedDomainName : ubuntuvm-737b91.westus2.cloudapp.azure.com
+
+
+PS /home/muhammad>
+Stackify.LinuxAgent.Extension                                                      westus2  /Subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/Providers/Microsoft.Compute…
+PS /home/muhammad> Get-AzVMImagePublisher -Location westus2  | grep -i Redhat
+RedHat                                                                             westus2  /Subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/Providers/Microsoft.Compute…
+redhat-rhel       
+
+redhat-rhel                                                                        westus2  /Subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/Providers/Microsoft.Compute…
+PS /home/muhammad> Get-AzVMImageOffer -Location westus2 -PublisherName redhat | select offer
+
+Offer
+-----
+alfredtestoffer
+osa
+RHEL
+rhel-byos
+rhel-cpp-test
+RHEL-HA
+rhel-raw
+RHEL-SAP
+RHEL-SAP-APPS
+RHEL-SAP-HA
+rhel-sig-publishing-test
+RHEL-TEST
+test_offer_china
+
+PS /home/muhammad>
+
+
+S /home/mahsan> az vm image list-offers --location westus2  --publisher redhat --output table
+Location    Name
+----------  ------------------------
+westus2     alfredtestoffer
+westus2     osa
+westus2     RHEL
+westus2     rhel-byos
+westus2     rhel-cpp-test
+westus2     RHEL-HA
+westus2     rhel-raw
+westus2     RHEL-SAP
+westus2     RHEL-SAP-APPS
+westus2     RHEL-SAP-HA
+westus2     rhel-sig-publishing-test
+westus2     RHEL-TEST
+westus2     test_offer_china
+PS /home/mahsan>
+
+
+

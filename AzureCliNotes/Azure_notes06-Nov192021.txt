@@ -1,0 +1,162 @@
+### Ansible 14_nov-@021
+mahsan@uazure:~$ az group list -o table
+Name                        Location    Status
+--------------------------  ----------  ---------
+cloud-shell-storage-westus  westus      Succeeded
+NetworkWatcherRG            westus2     Succeeded
+DefaultResourceGroup-WUS2   westus2     Succeeded
+mahsan@uazure:~$ az group create --name QuickstartAnsible-rg --location westus2
+{
+  "id": "/subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/QuickstartAnsible-rg",
+  "location": "westus2",
+  "managedBy": null,
+  "name": "QuickstartAnsible-rg",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+
+mahsan@uazure:~$ az vm create --resource-group QuickstartAnsible-rg --name QuickstartAnsible-vm --image OpenLogic:CentO.7:latest --admin-username azureuser --admin-password MuhammadAhsan7849##
+It is recommended to use parameter "--public-ip-sku Standard" to create new VM with Standard public IP. Please note thahe default public IP used for VM creation will be changed from Basic to Standard in the future.
+{
+  "fqdns": "",
+  "id": "/subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/QuickstartAnsible-rg/providers/Microsoft.Cote/virtualMachines/QuickstartAnsible-vm",
+  "location": "westus2",
+  "macAddress": "00-22-48-78-5F-EA",
+  "powerState": "VM running",
+  "privateIpAddress": "10.0.0.4",
+  "publicIpAddress": "13.66.160.192",
+  "resourceGroup": "QuickstartAnsible-rg",
+  "zones": ""
+}
+mahsan@uazure:~$
+
+
+mahsan@uazure:~$ az vm show -d -g QuickstartAnsible-rg -n QuickstartAnsible-vm --query publicIps -o tsv
+13.66.160.192
+mahsan@uazure:~$
+
+
+mahsan@uazure:~$ az account show
+{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "69b51b68-b4cd-40fa-ac55-79544376c330",
+  "id": "5d2deb94-44c1-4f65-88dc-22e6a9841a7f",
+  "isDefault": true,
+  "managedByTenants": [],
+  "name": "Azure subscription 1",
+  "state": "Enabled",
+  "tenantId": "69b51b68-b4cd-40fa-ac55-79544376c330",
+  "user": {
+    "name": "nixmsa@outlook.com",
+    "type": "user"
+  }
+}
+
+
+
+mahsan@uazure:~$ ssh azureuser@13.66.160.192
+The authenticity of host '13.66.160.192 (13.66.160.192)' can't be established.
+ECDSA key fingerprint is SHA256:AkYfh1nQ64O9M0zpqkU2p3KPJESJXs7fzslszlHXICA.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '13.66.160.192' (ECDSA) to the list of known hosts.
+azureuser@13.66.160.192's password:
+
+
+
+
+
+#!/bin/bash
+
+# Update all packages that have available updates.
+sudo yum update -y
+
+# Install Python 3 and pip.
+sudo yum install -y python3-pip
+
+# Upgrade pip3.
+sudo pip3 install --upgrade pip
+
+# Install Ansible.
+pip3 install "ansible==2.9.17"
+
+# Install Ansible azure_rm module for interacting with Azure.
+pip3 install ansible[azure]
+
+mahsan@uazure:~$ az account list
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "69b51b68-b4cd-40fa-ac55-79544376c330",
+    "id": "5d2deb94-44c1-4f65-88dc-22e6a9841a7f",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Azure subscription 1",
+    "state": "Enabled",
+    "tenantId": "69b51b68-b4cd-40fa-ac55-79544376c330",
+    "user": {
+      "name": "nixmsa@outlook.com",
+      "type": "user"
+    }
+  }
+]
+mahsan@uazure:~$
+
+
+
+Display name
+:
+Ansible
+Application (client) ID
+:
+ef4fbaca-1ac0-4b19-95c3-8bbf3188a0df
+Object ID
+:
+7251a3c4-3632-4d28-a7dd-8744deff3012
+Directory (tenant) ID
+:
+69b51b68-b4cd-40fa-ac55-79544376c330
+Supported account types
+:
+My organization only
+Client credentials
+:
+Add a certificate or secret
+Redirect URIs
+:
+Add a Redirect URI
+Application ID URI
+:
+Add an Application ID URI
+Managed application in local directory
+:
+Ansible
+
+mahsan@uazure:~$ az ad sp create-for-rbac --name ansibleserprincipal
+In a future release, this command will NOT create a 'Contributor' role assignment by default. If needed, use the --role argument to explicitly create a role assignment.
+Creating 'Contributor' role assignment under scope '/subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f'
+The output includes credentials that you must protect. Be sure that you do not include these credentials in your code or check the credentials into your source control. For more information, see https://aka.ms/azadsp-cli
+'name' property in the output is deprecated and will be removed in the future. Use 'appId' instead.
+{
+  "appId": "c257827e-5499-4c27-a27a-f9ed9eee2756",
+  "displayName": "ansibleserprincipal",
+  "name": "c257827e-5499-4c27-a27a-f9ed9eee2756",
+  "password": "CIHnuAGdFg797qvCvoA4-4TdyuGjzzydCg",
+  "tenant": "69b51b68-b4cd-40fa-ac55-79544376c330"
+}
+mahsan@uazure:~$
+
+
+
+[default]
+subscription_id=5d2deb94-44c1-4f65-88dc-22e6a9841a7f
+client_id=c257827e-5499-4c27-a27a-f9ed9eee2756
+secret=CIHnuAGdFg797qvCvoA4-4TdyuGjzzydCg
+tenant=69b51b68-b4cd-40fa-ac55-79544376c330
+
+export AZURE_SUBSCRIPTION_ID=5d2deb94-44c1-4f65-88dc-22e6a9841a7f
+export AZURE_CLIENT_ID=c257827e-5499-4c27-a27a-f9ed9eee2756
+export AZURE_SECRET=CIHnuAGdFg797qvCvoA4-4TdyuGjzzydCg
+export AZURE_TENANT=69b51b68-b4cd-40fa-ac55-79544376c330

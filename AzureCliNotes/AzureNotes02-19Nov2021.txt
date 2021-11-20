@@ -1,0 +1,129 @@
+New-AzureRmVM -Name "UbuntuVM" -Location westus2 `
+  -ResourceGroupName MyResource1 -ImageName UbuntuLTS `
+  -Size Standard_B1S
+  
+  az vm create --name UbuntuVM --resource-group MyResource1 \
+  --image UbuntuLTS --authentication-type password \
+  --admin-username student –size Standard_B1S
+  
+  muhammad@Azure:~$ az vm create --name UbuntuVM --resource-group MyResource1 --image UbuntuLTS --authentication-type password --admin-username mahsan --size Standard_B1S
+Admin Password:
+Confirm Admin Password:
+
+#########
+***16-Nov=2021
+muhammad@Azure:~$ az vm create --name UbuntuVM --resource-group MyResource1 --image UbuntuLTS --authentication-type password --admin-username mahsan --size Standard_B1S
+Admin Password:
+Confirm Admin Password:
+
+Connect-AzAccount -UseDeviceAuthentication ### connect azure for power shell ## 
+
+PS /home/muhammad> Get-AzureRmVMImagePublisher -Location westus2 | grep -i redhat
+RedHat                                                                             westus2  /Subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/Providers/Microsoft.Compute…
+redhat-rhel                                                                        westus2  /Subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/Providers/Microsoft.Compute…
+PS /home/muhammad>
+
+***Publisher
+ 
+mahsan@uazure:~$ az vm image list-publishers --location westus2 --output table | grep redhat
+westus2     redhat-rhel
+mahsan@uazure:~$ az vm image list-publishers --location westus2 --output table | grep -i redhat
+westus2     RedHat
+westus2     redhat-rhel
+mahsan@uazure:~$ az vm image list-publishers --location westus2 --output table | grep -i oracle
+westus2     Oracle
+mahsan@uazure:~
+
+*** ImageOffer
+
+mahsan@uazure:~$ az vm image list-offers --location westus2 \
+> --publisher Redhat --output table
+Location    Name
+----------  ------------------------
+westus2     alfredtestoffer
+westus2     osa
+westus2     RHEL
+westus2     rhel-byos
+westus2     rhel-cpp-test
+westus2     RHEL-HA
+westus2     rhel-raw
+westus2     RHEL-SAP
+westus2     RHEL-SAP-APPS
+westus2     RHEL-SAP-HA
+westus2     rhel-sig-publishing-test
+westus2     RHEL-TEST
+westus2     test_offer_china
+mahsan@uazure:~$
+
+
+PS /home/muhammad> Get-AzureRmVMImageOffer -Location westus2 -PublisherName Redhat | select Offer
+
+Offer
+-----
+alfredtestoffer
+osa
+RHEL
+rhel-byos
+rhel-cpp-test
+RHEL-HA
+rhel-raw
+RHEL-SAP
+RHEL-SAP-APPS
+RHEL-SAP-HA
+rhel-sig-publishing-test
+RHEL-TEST
+test_offer_china
+
+PS /home/muhammad>
+
+mahsan@uazure:~$ az vm list-sizes --location westus2 -o table | more
+MaxDataDiskCount    MemoryInMb    Name                    NumberOfCores    OsDiskSizeInMb    ResourceDiskS
+izeInMb
+------------------  ------------  ----------------------  ---------------  ----------------  -------------
+---------
+64                  5836800       Standard_M208ms_v2      208              1047552           4194304
+64                  2918400       Standard_M208s_v2       208              1047552           4194304
+64                  5836800       Standard_M416-208s_v2   416              1047552           8388608
+64                  5836800       Standard_M416s_v2       416              1047552           8388608
+64                  11673600      Standard_M416-208ms_v2  416              1047552           8388608
+64                  11673600      Standard_M416ms_v2      416              1047552           8388608
+4                   8192          Standard_D2a_v4         2                1047552           51200
+8                   16384         Standard_D4a_v4         4                1047552           102400
+16                  32768         Standard_D8a_v4         8                1047552           204800
+32                  65536         Standard_D16a_v4        16               1047552           409600
+32                  131072        Standard_D32a_v4        32               1047552           819200
+32                  196608        Standard_D48a_v4        48               1047552           1228800
+32                  262144        Standard_D64a_v4        64               1047552           1638400
+32                  393216        Standard_D96a_v4        96               1047552           2
+
+PS /home/muhammad> Get-AzureRmVMSize -Location westus2 | Format-List | more
+
+MaxDataDiskCount     : 64
+MemoryInMB           : 5836800
+Name                 : Standard_M208ms_v2
+NumberOfCores        : 208
+OSDiskSizeInMB       : 1047552
+ResourceDiskSizeInMB : 4194304
+
+MaxDataDiskCount     : 64
+MemoryInMB           : 2918400
+Name                 : Standard_M208s_v2
+NumberOfCores        : 208
+OSDiskSizeInMB       : 1047552
+ResourceDiskSizeInMB : 4194304
+
+MaxDataDiskCount     : 64
+MemoryInMB           : 5836800
+Name                 : Standard_M416-208s_v2
+NumberOfCores        : 416
+OSDiskSizeInMB       : 1047552
+ResourceDiskSizeInMB : 8388608
+
+MaxDataDiskCount     : 64
+MemoryInMB           : 5836800
+Name                 : Standard_M416s_v2
+--More--
+
+
+
+

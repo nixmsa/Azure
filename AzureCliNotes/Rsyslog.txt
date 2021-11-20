@@ -1,0 +1,12 @@
+# vim:ts=4:sw=4
+export PROMPT_COMMAND='RETRN_VAL=$?;logger -p  local5.debug "$(whoami) [$$]: $(history 1 | sed "s/^[ ]*[0-9]\+[ ]*//" ) [$RETRN_VAL] [$SSH_CLIENT]"'
+[root@lnxcstsdsggt02 ~]#
+
+
+# remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional
+#*.* @@remote-host:514
+# ### end of the forwarding rule ###
+local5.*     /var/log/phsa_audit.log
+[root@lnxcstsdsggt02 ~]# cat /etc/rsyslog.conf
+
+

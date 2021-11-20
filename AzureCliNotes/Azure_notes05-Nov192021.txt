@@ -1,0 +1,31 @@
+** Power Shell Commands **
+
+Create a resource group using the New-AzResourceGroup cmdlet.
+
+PS /home/muhammad> Connect-AzAccount
+WARNING: Interactive authentication is not supported in this session, please run cmdlet 'Connect-AzAccount -UseDeviceAuthentication'.
+PS /home/muhammad> cmdlet 'Connect-AzAccount -UseDeviceAuthentication'
+cmdlet: The term 'cmdlet' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS /home/muhammad>  'Connect-AzAccount -UseDeviceAuthentication'
+Connect-AzAccount -UseDeviceAuthentication
+PS /home/muhammad> Connect-AzAccount
+WARNING: Interactive authentication is not supported in this session, please run cmdlet 'Connect-AzAccount -UseDeviceAuthentication'.
+PS /home/muhammad> Connect-AzAccount -UseDeviceAuthentication
+WARNING: To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code AHJWETHJU to authenticate.
+
+Account            SubscriptionName     TenantId                             Environment
+-------            ----------------     --------                             -----------
+nixmsa@outlook.com Azure subscription 1 69b51b68-b4cd-40fa-ac55-79544376c330 AzureCloud
+
+PS /home/muhammad>
+PS /home/muhammad> New-AzResourceGroup -Name myResourceGroup -Location westus2
+
+ResourceGroupName : myResourceGroup
+Location          : westus2
+ProvisioningState : Succeeded
+Tags              :
+ResourceId        : /subscriptions/5d2deb94-44c1-4f65-88dc-22e6a9841a7f/resourceGroups/myResourceGroup
+
+
+PS /home/muhammad>
